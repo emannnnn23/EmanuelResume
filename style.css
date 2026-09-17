@@ -1,0 +1,309 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-accent: #111827;
+  --color-accent-dark: #6366f1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===================================
+   BASE
+=================================== */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* ===================================
+   CARDS
+=================================== */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark .card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* ===================================
+   SECTION HEADINGS
+=================================== */
+.section-icon {
+  color: #64748b;
+}
+
+body.dark .section-icon {
+  color: #94a3b8;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+body.dark .section-label {
+  color: #94a3b8;
+}
+
+/* ===================================
+   TAGS / PILLS
+=================================== */
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #334155;
+  background-color: transparent;
+  transition: background-color 0.2s, border-color 0.3s;
+}
+
+body.dark .tag {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.tag:hover {
+  background-color: #f8fafc;
+}
+
+body.dark .tag:hover {
+  background-color: #334155;
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+.btn-primary {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1e293b;
+}
+
+body.dark .btn-primary {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+body.dark .btn-primary:hover {
+  background-color: #cbd5e1;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, border-color 0.3s, color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #f1f5f9;
+}
+
+body.dark .btn-secondary {
+  color: #94a3b8;
+  border-color: #334155;
+}
+
+body.dark .btn-secondary:hover {
+  background-color: #334155;
+}
+
+/* ===================================
+   MUTED TEXT
+=================================== */
+.text-muted {
+  color: #64748b;
+}
+
+body.dark .text-muted {
+  color: #94a3b8;
+}
+
+/* ===================================
+   PROJECT CARDS
+=================================== */
+.project-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #ffffff;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, background-color 0.3s, border-color 0.3s;
+}
+
+body.dark .project-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.project-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+body.dark .project-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ===================================
+   SCROLL ANIMATIONS
+=================================== */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================================
+   DARK MODE TOGGLE
+=================================== */
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
+  background-color: #cbd5e1;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+body.dark .toggle-track {
+  background-color: #334155;
+  border-color: #475569;
+}
+
+.toggle-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #0f172a;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+body.dark .toggle-thumb {
+  background-color: #e2e8f0;
+  transform: translateX(20px);
+}
+
+/* ===================================
+   NAVBAR
+=================================== */
+.navbar {
+  background-color: rgba(241, 245, 249, 0.85);
+  border-bottom: 1px solid #e2e8f0;
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.dark .navbar {
+  background-color: rgba(15, 23, 42, 0.85);
+  border-bottom-color: #334155;
+}
+
+/* ===================================
+   CONTACT FORM INPUTS
+=================================== */
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  background-color: #f8fafc;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #94a3b8;
+}
+
+body.dark .form-input {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+body.dark .form-input:focus {
+  border-color: #475569;
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* ===================================
+   TIMELINE (Experience)
+=================================== */
+.timeline-line {
+  width: 1px;
+  background-color: #e2e8f0;
+}
+
+body.dark .timeline-line {
+  background-color: #334155;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #94a3b8;
+  flex-shrink: 0;
+}
+
+body.dark .timeline-dot {
+  background-color: #475569;
+}

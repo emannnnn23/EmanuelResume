@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study | Emanuel Reyes</title>
+  <meta name="description" content="Detailed project case study." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Sidebar sticky layout */
+    .cs-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: start;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    @media (max-width: 768px) {
+      .cs-layout {
+        grid-template-columns: 1fr;
+      }
+      .cs-sidebar {
+        position: static !important;
+      }
+    }
+
+    .cs-sidebar {
+      position: sticky;
+      top: 72px; /* below navbar */
+    }
+
+    /* Section image */
+    .cs-section-image {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: #f8fafc;
+    }
+
+    body.dark .cs-section-image {
+      border-color: #334155;
+      background-color: #1e293b;
+    }
+
+    /* Feature grid item */
+    .feature-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .feature-icon-wrap {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background-color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #64748b;
+    }
+
+    body.dark .feature-icon-wrap {
+      background-color: #334155;
+      color: #94a3b8;
+    }
+
+    /* Flow steps */
+    .flow-steps {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #f8fafc;
+      margin-bottom: 20px;
+    }
+
+    body.dark .flow-steps {
+      border-color: #334155;
+      background-color: #0f172a;
+    }
+
+    .flow-step {
+      padding: 6px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background-color: #fff;
+      color: #334155;
+    }
+
+    body.dark .flow-step {
+      border-color: #334155;
+      background-color: #1e293b;
+      color: #94a3b8;
+    }
+
+    .flow-arrow {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Overview table */
+    .overview-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.78rem;
+    }
+
+    body.dark .overview-row {
+      border-bottom-color: #1e293b;
+    }
+
+    .overview-row:last-child {
+      border-bottom: none;
+    }
+
+    .overview-key {
+      color: #94a3b8;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      padding-top: 2px;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #64748b;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #0f172a;
+    }
+
+    body.dark .back-link:hover {
+      color: #e2e8f0;
+    }
+
+    /* Section divider */
+    .cs-divider {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 32px 0;
+    }
+
+    body.dark .cs-divider {
+      border-top-color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="back-link" id="back-btn">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Portfolio
+      </a>
+      <button id="dark-toggle" aria-label="Toggle dark mode" class="toggle-track" title="Toggle dark mode">
+        <div class="toggle-thumb"></div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- NOT FOUND STATE -->
+  <div id="not-found" class="hidden max-w-2xl mx-auto px-4 py-24 text-center">
+    <p class="text-4xl mb-4">🔍</p>
+    <h1 class="text-2xl font-semibold mb-2">Project not found</h1>
+    <p class="text-muted mb-6">The project you're looking for doesn't exist or was removed.</p>
+    <a href="/" class="btn-primary inline-flex">← Back to Portfolio</a>
+  </div>
+
+  <!-- CASE STUDY CONTENT -->
+  <div id="case-study-root" class="hidden">
+
+    <!-- Hero Banner -->
+    <div id="cs-hero" class="w-full max-w-5xl mx-auto px-4 pt-8 pb-4">
+      <div class="overflow-hidden rounded-2xl" style="max-height: 360px;">
+        <img id="cs-hero-img" src="" alt="" class="w-full object-cover" style="max-height:360px;" />
+      </div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="cs-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="cs-sidebar space-y-5">
+
+        <!-- Project Overview -->
+        <div class="card p-5">
+          <p class="section-label mb-3">Project Overview</p>
+          <div id="cs-overview-table"></div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="card p-5">
+          <p class="section-label mb-3">Tech Stack</p>
+          <div id="cs-tech-stack" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <!-- Key Features -->
+        <div class="card p-5">
+          <p class="section-label mb-3">Key Features</p>
+          <ul id="cs-key-features" class="space-y-2"></ul>
+        </div>
+
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main id="cs-main" class="space-y-10 min-w-0">
+        <!-- Dynamically populated -->
+      </main>
+
+    </div>
+  </div>
+
+  <script type="module" src="/case-study.js"></script>
+</body>
+</html>
