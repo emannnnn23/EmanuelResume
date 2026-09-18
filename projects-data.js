@@ -160,4 +160,94 @@ export const projects = [
       },
     ],
   },
+  {
+    id: 'eld-trip-planner',
+    title: 'ELD Trip Planner',
+    tagline: 'A Hours-of-Service compliant trip planning tool that maps routes and auto-fills FMCSA daily driver logs.',
+    thumbnail: '/assets/Eld_Trip.png',
+    overview: {
+      type: 'Web Application',
+      users: 'Truck Drivers, Dispatchers / Fleet Managers',
+      workflow: 'Enter Trip Details → Plan Route → Review Stops & Rest Breaks → View Daily Logs',
+      platforms: 'Browser-based, desktop and mobile web',
+      database: 'PostgreSQL via Django ORM',
+    },
+    techStack: [
+      'React', 'Vite', 'Django', 'Django REST Framework', 'PostgreSQL', 'Leaflet', 'OSRM', 'Render', 'Vercel'
+    ],
+    keyFeatures: [
+      'FMCSA Hours-of-Service compliant route planning',
+      'Automatic stop insertion (fuel, breaks, resets, restarts)',
+      'Interactive route map with color-coded stops',
+      'Auto-filled, canvas-drawn daily log sheets',
+      'Multi-day log generation for long-haul trips',
+      '70-hour/8-day cycle tracking with live remaining-hours display',
+      'Responsive, mobile-friendly design'
+    ],
+    sections: [
+      {
+        title: 'Trip Planning Flow',
+        description: 'Users enter their current location, pickup, dropoff, and current cycle hours used. The app geocodes each address, requests a route, and runs the full itinerary through an HOS rule engine before returning stops and log data.',
+        image: '/assets/Eld_photo1.png',
+        features: [
+          { icon: 'search', label: 'Location Input', detail: 'Free-text address fields geocoded via Nominatim — no map-pin dragging required.' },
+          { icon: 'bar', label: 'Cycle Hours Control', detail: 'A synced slider and numeric input for "Current Cycle Used (Hrs)," with the 70-hour remaining balance calculated live as the driver adjusts it.' },
+          { icon: 'check', label: 'Example Routes', detail: 'One-click presets (short / medium / long-haul) for demoing the tool without typing addresses.' },
+          { icon: 'story', label: 'Departure Time Picker', detail: 'Lets the user set when the trip starts, so every log timestamp lines up with a real shift start.' }
+        ]
+      },
+      {
+        title: 'HOS Rule Engine',
+        description: 'Every planned trip runs through a server-side engine that enforces FMCSA property-carrying driver rules before any stop is placed on the map.',
+        image: '/assets/Eld_photo2.png',
+        features: [
+          { icon: 'alert', label: '11-Hour Driving Limit', detail: 'Drive segments are capped and automatically split once the daily driving limit is reached.' },
+          { icon: 'alert', label: '14-Hour Window', detail: 'On-duty time — not just driving — counts against the shift window.' },
+          { icon: 'bar', label: '30-Minute Break Rule', detail: 'Inserted automatically once 8 cumulative hours of driving are reached.' },
+          { icon: 'grid', label: '70-Hour / 8-Day Cycle', detail: 'Cycle hours carry over from the driver\'s input and trigger a mandatory 34-hour restart when exhausted.' },
+          { icon: 'check', label: 'Fuel Stops', detail: 'Automatically inserted at least once every 1,000 miles.' }
+        ]
+      },
+      {
+        title: 'Route Map',
+        description: 'The map plots the full route with color-coded markers for every stop type, giving a dispatcher an at-a-glance read of the trip.',
+        image: '/assets/Eld_photo3.png',
+        features: [
+          { icon: 'grid', label: 'Leaflet + Mapbox Tiles', detail: 'Vector-quality basemap tiles with light/dark theme switching.' },
+          { icon: 'check', label: 'Marker Legend', detail: 'Distinct icons and colors for start/drop, pickup, fuel, and rest stops.' },
+          { icon: 'chat', label: 'Stop Popups', detail: 'Arrive/depart timestamps and stop type shown on click.' },
+          { icon: 'search', label: 'Auto-Fit Bounds', detail: 'The map automatically zooms to fit the entire route on load.' }
+        ]
+      },
+      {
+        title: 'Daily Log Sheets',
+        description: 'Every calendar day the trip spans gets its own auto-filled FMCSA-style log grid.',
+        image: '/assets/Eld_photo4.png',
+        features: [
+          { icon: 'grid', label: 'Canvas-Drawn Grid', detail: 'The classic 4-row (Off Duty / Sleeper / Driving / On-Duty) 24-hour grid, drawn to match the paper log format.' },
+          { icon: 'line', label: 'Duty Status Line', detail: 'A stepped line plotted directly from that day\'s duty segments.' },
+          { icon: 'bar', label: 'Daily Totals', detail: 'Hours per status auto-summed and displayed under each grid.' },
+          { icon: 'story', label: 'Multi-Day Support', detail: 'Long-haul trips automatically generate as many log sheets as the trip requires.' }
+        ]
+      },
+      {
+        title: 'Architecture Overview',
+        description: 'The application follows a decoupled architecture: a Django REST Framework API handles geocoding, routing, and all HOS calculations, while a React (Vite) frontend handles map rendering and log-sheet drawing. The two communicate over a single JSON contract per trip — the frontend never needs its own copy of the HOS rules.',
+        flow: [
+          'Trip Form Submission',
+          'Django API',
+          'Geocoding + Routing',
+          'HOS Rule Engine',
+          'JSON Response',
+          'React Rendering'
+        ],
+        bullets: [
+          'The HOS engine runs as pure, independently-tested Python functions before ever touching a Django view.',
+          'A single POST /api/plan-trip/ call returns everything needed to render both the map and every daily log — no follow-up requests.',
+          'React-Leaflet renders the route and stops; a custom Canvas component draws each daily log grid from the same response.',
+          'Deployed as two independent services — Django on Render, React on Vercel — communicating over a CORS-enabled REST API.'
+        ]
+      }
+    ]
+  }
 ];
