@@ -35,6 +35,7 @@ if (!project) {
   const heroImg = document.getElementById('cs-hero-img');
   heroImg.src = project.thumbnail;
   heroImg.alt = project.title;
+  if (project.heroPosition) heroImg.style.objectPosition = project.heroPosition;
 
   // ── Overview table ───────────────────────────────────────
   const overviewMap = {

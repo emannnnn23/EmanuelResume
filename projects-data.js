@@ -112,59 +112,92 @@ export const projects = [
     ],
   },
   {
-    id: 'social-flow',
-    title: 'Social Flow',
-    tagline: 'A vibrant, responsive social feed app with real-time updates and an engagement-driven interface.',
-    thumbnail: '/assets/project_social_1789574033372.jpg',
+    id: 'tahak',
+    title: 'TAHAK: Slot Confirmation Check',
+    tagline: 'Got into a college program? Answer 24 short questions and see how likely you are to confirm your slot.',
+    thumbnail: '/assets/Tahak_photo1.png',
+    heroPosition: 'top',
+    demoUrl: 'https://decisionpulsify-frontend.vercel.app/',
     overview: {
-      type: 'Social Web Application',
-      users: 'General public, Content creators',
-      workflow: 'Sign up → Create Profile → Post → Engage',
-      platforms: 'Mobile-first, responsive web',
-      database: 'Firebase Firestore',
+      type: 'Web Application',
+      users: 'Senior-high graduates, Schools / Guidance Counselors',
+      workflow: 'Choose a Program → Answer 24 Questions → Check Likelihood → Compare Programs',
+      platforms: 'Browser-based, mobile-first web',
+      database: 'None (logistic regression coefficients served by the API)',
     },
     techStack: [
-      'Vue.js', 'Pinia', 'Firebase Auth', 'Firestore',
-      'Firebase Storage', 'Tailwind CSS', 'Vite', 'PWA',
+      'HTML', 'CSS', 'Vanilla JavaScript', 'Python', 'FastAPI', 'Pydantic', 'Vercel', 'Render'
     ],
     keyFeatures: [
-      'Real-time post feed',
-      'Like, comment & share actions',
-      'User stories carousel',
-      'Follow / unfollow system',
-      'Media uploads (image/video)',
-      'PWA with offline support',
+      'Per-program logistic regression prediction',
+      'Validated FastAPI backend with health checks',
+      'In-browser fallback when the API is cold-starting',
+      'Answer-sheet inspired design with shaded ovals',
+      'Clear validation and a live progress counter',
+      'Accessible radio controls with keyboard support',
+      'Responsive, mobile-friendly design'
     ],
     sections: [
       {
-        title: 'Feed & Engagement Flow',
-        description: 'The main feed subscribes to Firestore\'s onSnapshot listener, rendering new posts in real time without page refresh. Users can like, comment, and share with optimistic UI updates for instant perceived performance.',
-        image: '/assets/project_social_1789574033372.jpg',
+        title: 'Answer Sheet Redesign',
+        description: 'The users are 17- and 18-year-old Filipino students who have just been through college entrance exams, and every one of them knows the answer sheet where you shade ovals with a pencil. Every question in TAHAK is multiple choice, so the answer sheet became both the visual identity and the way you answer.',
+        image: '/assets/Tahak_photo1.png',
         features: [
-          { icon: 'heart', label: 'Like System', detail: 'Optimistic UI increments the count immediately while Firestore transaction confirms in the background.' },
-          { icon: 'chat', label: 'Comment Thread', detail: 'Nested comments rendered with recursive components, supporting infinite reply depth.' },
-          { icon: 'story', label: 'Stories Carousel', detail: '24-hour ephemeral stories built with a timed progress bar and swipe-to-advance gesture.' },
-          { icon: 'bell', label: 'Push Notifications', detail: 'Firebase Cloud Messaging delivers real-time like and comment notifications.' },
-        ],
+          { icon: 'grid', label: 'Name Grid Header', detail: '"TAHAK" is written in the boxes of an exam name grid, and the matching letters shade themselves in when the page loads.' },
+          { icon: 'check', label: 'Oval Answers', detail: 'Every answer is an oval with the word inside ("Yes", "STEM", "Public"). Tapping one shades it in pencil graphite.' },
+          { icon: 'story', label: 'Colors From the Sheet', detail: 'Green ink on white paper, graphite for marks, and a teacher\'s red pen for errors and low results. Corner squares echo scanner alignment marks.' },
+          { icon: 'line', label: 'One Typeface', detail: 'Archivo\'s variable width axis replaces a second font: extra wide and heavy for the name and result, normal width for questions.' }
+        ]
       },
       {
-        title: 'Architecture & Data Flow',
-        description: 'Vue.js with Pinia manages all client state. Firebase Auth handles sign-up and social login. Firestore collections are structured around users, posts, and follows for efficient querying without JOINs.',
-        flow: ['User Action', 'Pinia Store', 'Firebase SDK', 'Firestore Write', 'Snapshot Listener → UI'],
-        bullets: [
-          'Firestore security rules enforce that only authenticated users can write, and only to their own documents.',
-          'Firebase Storage handles media uploads with client-side compression before upload.',
-          'PWA service worker caches the last 50 feed posts for offline reading.',
-          'Pinia persists auth state to localStorage so sessions survive browser restarts.',
-        ],
+        title: 'Form & Usability',
+        description: 'Students pick a program, then answer questions about their academic background, their interest in the program and their situation. The form is built to be quick to fill in on a phone.',
+        image: '/assets/Tahak_photo2.png',
+        features: [
+          { icon: 'alert', label: 'Clearer Errors', detail: 'Submitting with blanks marks the missing items in red, jumps to the first one, and says how many are left.' },
+          { icon: 'bar', label: 'Progress Counter', detail: 'A live "22 of 24 answered" counter sits beside the submit button.' },
+          { icon: 'shield', label: 'Accessible Controls', detail: 'The ovals are real radio buttons grouped in fieldsets, with visible focus and reduced-motion support.' },
+          { icon: 'filter', label: 'Fewer Dependencies', detail: 'Removed the Tailwind CDN, loading spinner and confetti library. The page loads one stylesheet and one font.' }
+        ]
       },
-    ],
+      {
+        title: 'Prediction Result',
+        description: 'Each program has its own logistic regression model. Every answer adds a positive or negative weight to a score, which is converted to the probability that the student confirms their slot.',
+        image: '/assets/Tahak_photo3.png',
+        features: [
+          { icon: 'bar', label: 'Animated Result', detail: 'The percentage counts up while a row of 20 ovals shades in, one for every 5%.' },
+          { icon: 'chat', label: 'Honest Wording', detail: 'The result says "You\'d very likely confirm your slot", not "be confirmed", and the footer notes it is an estimate, not an admission decision.' },
+          { icon: 'search', label: 'Model Inputs', detail: 'GWA scaled to 0–1, SHS strand, school type, honors, 10 program-specific questions and 10 general ones about family, cost, scholarships and distance.' },
+          { icon: 'check', label: 'Honors Bug Fix', detail: 'The "graduated with honors" factor was never applied because its feature name was split on underscores. Fixed on both sides, so the API and the browser now match to all 17 digits.' }
+        ]
+      },
+      {
+        title: 'Architecture Overview',
+        description: 'I took over a single static page that ran the model entirely in the browser and split it into a static frontend on Vercel and a FastAPI service on Render. The frontend waits 8 seconds for the API, then computes the same result in the browser, so a sleeping free-tier server never shows the user a broken page.',
+        flow: [
+          'Form Submission',
+          'POST /api/predict',
+          'Pydantic Validation',
+          'Logistic Regression',
+          'p_confirm Response',
+          'Result Rendering'
+        ],
+        bullets: [
+          'Pydantic models reject bad input before any math runs, such as a GWA outside 70–100, an unknown strand or a missing answer.',
+          'Allowed CORS origins come from an environment variable, so in production only the Vercel site can call the API.',
+          'A /health endpoint supports Render health checks, and interactive docs are served at /docs.',
+          'A render.yaml blueprint and vercel.json handle deployment, and the frontend detects whether it runs locally or in production.',
+          'The Computer Science model uses weights from real student survey data; the other four programs use estimated weights for demonstration.'
+        ]
+      }
+    ]
   },
   {
     id: 'eld-trip-planner',
     title: 'ELD Trip Planner',
     tagline: 'A Hours-of-Service compliant trip planning tool that maps routes and auto-fills FMCSA daily driver logs.',
     thumbnail: '/assets/Eld_Trip.png',
+    demoUrl: 'https://eld-planner-psi.vercel.app/',
     overview: {
       type: 'Web Application',
       users: 'Truck Drivers, Dispatchers / Fleet Managers',
