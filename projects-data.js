@@ -282,5 +282,76 @@ export const projects = [
         ]
       }
     ]
+  },
+  {
+    id: 'pr-guardian',
+    title: 'PR Guardian',
+    tagline: 'A GitHub pull request reviewer that only reports problems it can point to: deterministic security rules plus an optional local AI model, posted as inline comments.',
+    thumbnail: '/assets/PrGuardian_inline.png',
+    demoUrl: 'https://github.com/Emannnqt/pr-guardian/pull/1',
+    overview: {
+      type: 'Developer Tool (GitHub Action + CLI)',
+      users: 'Developers, Code Reviewers, Small Engineering Teams',
+      workflow: 'Open Pull Request → Read Diff via API → Rules + Optional AI → Validate Findings → Inline Comments + Job Summary',
+      platforms: 'GitHub Actions, command line (Node.js 22+)',
+      database: 'None by design: no stored source code, results live on GitHub',
+    },
+    techStack: [
+      'TypeScript', 'Node.js', 'GitHub Actions', 'Octokit', 'Zod', 'Ollama', 'Vitest', 'ESLint', 'esbuild',
+    ],
+    keyFeatures: [
+      'Inline review comments on the exact changed line',
+      'Evidence grounding: AI findings must quote the diff or they are dropped',
+      'Never executes pull request code; read-only permissions by default',
+      'Re-runs post nothing new (fingerprinted, spoof-resistant comments)',
+      'Optional local AI review (Ollama), with no code sent to third parties',
+      'Prompt-injection and secret-redaction safeguards',
+      'Published evaluation on 27 labeled pull requests',
+    ],
+    sections: [
+      {
+        title: 'Review on the Pull Request',
+        description: 'When a pull request is opened or updated, the GitHub Action reads the changed lines through the REST API (it never checks out or runs the code) and posts each finding as an inline comment on the line it refers to, with an explanation and a suggested fix. All findings go into one review per run, so the PR is never flooded.',
+        image: '/assets/PrGuardian_inline.png',
+        features: [
+          { icon: 'chat', label: 'Inline Comments', detail: 'One COMMENT review per run, only on added lines. It never approves, blocks, edits or deletes anyone\'s comments.' },
+          { icon: 'check', label: 'No Duplicates on Re-run', detail: 'Each comment carries a hidden fingerprint; re-runs skip findings that already have a PR Guardian comment on that line.' },
+          { icon: 'shield', label: 'Least Privilege', detail: 'Read-only by default; write access only for opt-in inline comments. Fork PRs fall back safely to the summary.' },
+          { icon: 'alert', label: 'Spoof-Resistant', detail: 'Only comments written by the bot count, so a PR author cannot hide a finding by pasting the marker.' },
+        ],
+      },
+      {
+        title: 'Honest Job Summary',
+        description: 'Every run publishes a full report as the job summary: status, findings by severity, file and line, evidence, provenance (rule or AI) and suggested fixes. A review is always Completed, Completed with limitations, or Failed, so an analyzer failure never looks like a clean bill of health.',
+        image: '/assets/PrGuardian_summary.png',
+        features: [
+          { icon: 'search', label: 'Evidence on Every Finding', detail: 'Each finding names a file and line and quotes the code it is about.' },
+          { icon: 'bar', label: 'Severity Grouping', detail: 'Findings are grouped from critical to info, with an opt-in fail-on threshold for CI enforcement.' },
+          { icon: 'shield', label: 'Safe Rendering', detail: 'Text from the pull request is escaped: no live HTML, links or @mentions can be injected into the report.' },
+          { icon: 'bell', label: 'Honest Status', detail: 'Skipped files, size limits and failed analyzers are stated, never hidden.' },
+        ],
+      },
+      {
+        title: 'Measured, Not Claimed',
+        description: 'I built a labeled dataset of 27 pull-request diffs (security bugs, logic bugs, clean changes and prompt-injection attempts) and an evaluation harness. Built-in rules alone: 90% precision, 47% recall. Adding a small local model (qwen2.5-coder 3B on a CPU-only laptop): 77% precision, 90% recall. The evaluation also exposed a real bug: a hidden 5-minute limit in Node fetch that broke slow model calls, fixed by switching to streaming.',
+        flow: ['Labeled PR Diffs', 'PR Guardian Review', 'Match by File + Line', 'Precision / Recall / False Positives', 'Published Results'],
+        bullets: [
+          'Labels mark real issues whether or not the tool can detect them, so recall shows the gaps honestly.',
+          'Rules-only results are re-computed in CI and must match the published numbers.',
+          'Limitations are documented: small author-written dataset, single hardware setup, model nondeterminism.',
+        ],
+      },
+      {
+        title: 'Architecture Overview',
+        description: 'A modular monolith in one Node.js process. The review core never talks to GitHub or a model directly; adapters do, behind narrow interfaces, and lint rules enforce those boundaries. Every input (diffs, API responses, model output) is treated as untrusted and validated with Zod.',
+        flow: ['Pull Request Event', 'GitHub Adapter', 'Diff Parser + Limits', 'Rules + Optional AI', 'Validation + Grounding', 'Inline Comments + Summary'],
+        bullets: [
+          'Pull request code is never executed; the diff is read through the GitHub REST API.',
+          'AI output must be size-capped JSON whose findings quote an added line, or it is rejected.',
+          'Files that may contain secrets are never analyzed or sent to a model; detected secrets are redacted everywhere.',
+          'Shipped as a bundled GitHub Action (v1.0.0) with 370+ tests, CI on Node 22 and 24, and an MIT license.',
+        ],
+      },
+    ],
   }
 ];
