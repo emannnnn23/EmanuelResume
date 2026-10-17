@@ -3,64 +3,82 @@
 // ============================================================
 export const projects = [
   {
-    id: 'aura-store',
-    title: 'Aura Store',
-    tagline: 'A high-performance e-commerce storefront with intuitive product discovery and checkout flow.',
-    thumbnail: '/assets/project_ecommerce_1789574007665.jpg',
+    id: 'bananalyze',
+    title: 'Bananalyze',
+    tagline: 'An offline mobile app that tells farmers and vendors a banana\'s variety and ripeness from a single photo.',
+    thumbnail: '/assets/Bananalyze_cover.png',
     overview: {
-      type: 'Web Application',
-      users: 'Shoppers, Retailers',
-      workflow: 'Browse → Filter → Cart → Checkout → Confirmation',
-      platforms: 'Browser-based, desktop and mobile web',
-      database: 'PostgreSQL via Supabase',
+      type: 'Mobile Application (Android / iOS)',
+      users: 'Farmers, Market Vendors',
+      workflow: 'Point Camera or Upload Photo → Scan → View Variety & Ripeness → Save to History',
+      platforms: 'Android and iOS, fully offline',
+      database: 'SQLite on-device (sqflite)',
     },
     techStack: [
-      'Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase',
-      'Zustand', 'Stripe API', 'Vercel', 'REST API',
+      'Flutter', 'Dart', 'TensorFlow Lite', 'SQLite', 'Python', 'TensorFlow / Keras', 'FastAPI', 'GitHub Actions'
     ],
     keyFeatures: [
-      'Product filtering & search',
-      'Cart & wishlist management',
-      'Secure Stripe checkout',
-      'Responsive mobile-first design',
-      'Real-time stock updates',
-      'Order confirmation emails',
+      'Classifies 6 Philippine banana varieties across 3 ripeness stages',
+      'Runs entirely on the phone, with no internet needed',
+      'Live scan guidance that checks the frame before you tap Scan',
+      'Rejects non-banana photos instead of guessing a variety',
+      'Ripeness-aware health benefits and Filipino dish suggestions',
+      'Scan history saved on the device',
+      'Large touch targets and plain-language results for non-technical users'
     ],
     sections: [
       {
-        title: 'Product Discovery Flow',
-        description: 'Users can browse products by category, filter by price range and brand, and sort results. A sticky filter sidebar allows real-time refinement without page reloads, keeping interactions fast and intuitive.',
-        image: '/assets/cs_ecommerce_flow1.jpg',
+        title: 'Scan Flow',
+        description: 'The app is built for farmers and vendors, many of whom are not comfortable with technical apps, so the rule was two taps at most from opening the app to seeing a result. The camera screen has one dominant Scan button, with gallery upload on the left and flash on the right, in the layout every phone camera uses.',
+        image: '/assets/Bananalyze_photo1.png',
         features: [
-          { icon: 'filter', label: 'Category Sidebar', detail: 'Persistent filters allow users to drill down by category, price, brand, and material at any time.' },
-          { icon: 'search', label: 'Search Integration', detail: 'Full-text product search powered by Supabase with debounced input for performance.' },
-          { icon: 'sort', label: 'Sort Controls', detail: 'Results are sortable by popularity, price (low→high / high→low), and newest arrivals.' },
-          { icon: 'grid', label: 'Grid / List Toggle', detail: 'Users can switch between grid and list views based on their browsing preference.' },
-        ],
+          { icon: 'search', label: 'Live Scan Guidance', detail: 'Corner brackets and a hint pill ("Point at a banana", "Looks good, tap Scan", "Too dark, turn on flash") react to the live preview, each with its own icon so color is never the only cue.' },
+          { icon: 'check', label: 'Model-Backed Detection', detail: 'The live hint runs the same banana model on the scan frame in a background isolate, so the hint and the final result always agree. Checks are paced by measured run time to stay smooth on low-end phones.' },
+          { icon: 'grid', label: 'Upload From Gallery', detail: 'Photos taken earlier or sent by someone else go through the exact same analysis pipeline, and upload works even when camera access is denied.' },
+          { icon: 'alert', label: 'Plain-Language Errors', detail: 'Unclear photos get messages like "Couldn\'t tell clearly, try moving closer" with one large retry button, never technical terms.' }
+        ]
       },
       {
-        title: 'Checkout Flow',
-        description: 'A three-step checkout process guides the user from cart review → shipping details → payment. Stripe Elements handles card input securely without storing any PCI data server-side.',
-        image: '/assets/project_ecommerce_1789574007665.jpg',
+        title: 'Results Screen',
+        description: 'Results lead with a large headline such as "Lakatan — Ripe" and a friendly certainty label instead of a raw confidence score. Each result also explains what to do with the banana at that stage.',
+        image: '/assets/Bananalyze_photo2.png',
         features: [
-          { icon: 'cart', label: 'Cart Management', detail: 'Items persist in localStorage so the cart survives page refreshes and tab closes.' },
-          { icon: 'shield', label: 'Stripe Integration', detail: 'Payment Intent API confirms charges server-side before fulfillment to prevent double charges.' },
-          { icon: 'mail', label: 'Order Confirmation', detail: 'Automated confirmation email sent via Resend API with order summary and estimated delivery.' },
-          { icon: 'check', label: 'Form Validation', detail: 'All shipping fields validated client-side before the payment step is unlocked.' },
-        ],
+          { icon: 'bar', label: 'Friendly Certainty', detail: 'Confidence is shown as one to three bars with labels like "We\'re pretty sure" or "This looks likely", never as a raw score.' },
+          { icon: 'heart', label: 'Health Benefits', detail: 'A card lists the health benefits of the variety at its detected ripeness.' },
+          { icon: 'story', label: 'Dish Suggestions', detail: 'Ripeness-aware Filipino dishes, such as banana chips for unripe saba or turon and banana cue for ripe saba.' },
+          { icon: 'shield', label: 'Not-a-Banana Rejection', detail: 'A dedicated NotBanana class catches photos of roads, desks or people, which are sent to the same friendly retry message instead of being forced into a variety.' }
+        ]
+      },
+      {
+        title: 'History & Onboarding',
+        description: 'Every scan is saved on the phone with its photo, so users can look back at past results without an account or an internet connection. First-time users get a short tutorial that never appears again.',
+        image: '/assets/Bananalyze_photo3.png',
+        features: [
+          { icon: 'grid', label: 'Scan History', detail: 'Past scans are stored in SQLite and are one tap away from the camera screen, with options to delete one record or clear them all.' },
+          { icon: 'check', label: 'Durable Photos', detail: 'Scan photos are stored in app storage instead of the cache, so history images survive when the phone clears its cache.' },
+          { icon: 'story', label: 'Three-Page Onboarding', detail: 'A swipeable tutorial with Skip, Next and Back buttons, shown only on first launch using a saved preference flag.' },
+          { icon: 'chat', label: 'About Page', detail: 'Explains what the app can and cannot do, in plain language.' }
+        ]
       },
       {
         title: 'Architecture Overview',
-        description: 'The application follows a Next.js App Router architecture with server components for data fetching and client components for interactivity. Supabase handles auth and the product database.',
-        flow: ['User Request', 'Next.js App Router', 'Server Component', 'Supabase Query', 'Rendered UI'],
-        bullets: [
-          'Server components fetch product data directly from Supabase — no client-side waterfall.',
-          'Zustand manages cart state globally across all client components.',
-          'Stripe webhook confirms payment and triggers the order fulfillment flow.',
-          'Vercel Edge Network handles static assets and caching for sub-50ms TTFB.',
+        description: 'Bananalyze is a three-person monorepo with a Flutter app, a Python ML workspace and a development-only FastAPI service. I owned the mobile app and its design system. The app and model were developed in parallel against a shared InferenceService contract, so I built every screen against a mock while the model was being trained, then swapped in the real TensorFlow Lite model with a one-line change.',
+        flow: [
+          'Camera / Gallery Photo',
+          'Scan Frame Crop',
+          'TFLite Model (on-device)',
+          'Confidence & NotBanana Gate',
+          'Results Screen',
+          'SQLite History'
         ],
-      },
-    ],
+        bullets: [
+          'The model is a MobileNetV2 transfer-learning classifier with 19 classes (6 varieties × 3 ripeness stages, plus NotBanana), reaching 96.6% accuracy on a 591-image test set split by source photo so augmented copies cannot leak between training and testing.',
+          'All colors, spacing and font sizes come from a single design token file, and reviews rejected any hard-coded style in a screen.',
+          'The FastAPI service is a development tool for batch-testing the model. The shipped app never calls it.',
+          'GitHub Actions runs Flutter analysis and tests plus Python linting and tests on every pull request.'
+        ]
+      }
+    ]
   },
   {
     id: 'quantum-ai',
