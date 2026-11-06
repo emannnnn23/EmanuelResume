@@ -7,6 +7,7 @@ export const projects = [
     title: 'Bananalyze',
     tagline: 'An offline mobile app that tells farmers and vendors a banana\'s variety and ripeness from a single photo.',
     thumbnail: '/assets/Bananalyze_cover.png',
+    demoUrl: 'https://bananalyze-elites.vercel.app/',
     overview: {
       type: 'Mobile Application (Android / iOS)',
       users: 'Farmers, Market Vendors',
@@ -40,7 +41,7 @@ export const projects = [
       },
       {
         title: 'Results Screen',
-        description: 'Results lead with a large headline such as "Lakatan — Ripe" and a friendly certainty label instead of a raw confidence score. Each result also explains what to do with the banana at that stage.',
+        description: 'Results lead with the variety and ripeness in large text, a plain tip such as "Ready to eat today", and a three-stage ripeness scale. A friendly certainty label replaces the raw confidence score, and each result explains what to do with the banana at that stage.',
         image: '/assets/Bananalyze_photo2.png',
         features: [
           { icon: 'bar', label: 'Friendly Certainty', detail: 'Confidence is shown as one to three bars with labels like "We\'re pretty sure" or "This looks likely", never as a raw score.' },
@@ -371,5 +372,113 @@ export const projects = [
         ],
       },
     ],
+  },
+  {
+    id: 'bilikha',
+    title: 'Bilikha',
+    tagline: 'A directory and inquiry platform that connects creative professionals across Biliran province with the clients, LGUs and organisations that hire them.',
+    thumbnail: '/assets/Bilikha_cover.png',
+    heroPosition: 'top',
+    demoUrl: 'https://bilikha-staging.vercel.app/directory',
+    overview: {
+      type: 'Web Application (Team Project)',
+      users: 'Creative Professionals, Clients, LGUs and Organisations',
+      workflow: 'Search the Directory → View an Offer or Profile → Sign In → Message the Creative → Agree on the Work → Rate',
+      platforms: 'Browser-based, mobile-first web (from 320px wide)',
+      database: 'PostgreSQL 17 via Drizzle ORM, Supabase Storage for media',
+    },
+    techStack: [
+      'TypeScript', 'React 19', 'Vite', 'Tailwind CSS 4', 'TanStack Query', 'Express 5', 'Drizzle ORM', 'PostgreSQL', 'Supabase Storage', 'Vercel', 'Render'
+    ],
+    keyFeatures: [
+      'ID verification for new accounts, with admin review and appeals',
+      'Typo-tolerant search by craft, name or town',
+      'Link preview cards for shared profiles and offers',
+      'Profile cover photos with admin approval',
+      'Client postings shown as a card catalog with reply counts',
+      'Navy-and-red redesign that works from 320px wide',
+      'Built around the nine creative domains of RA 11904'
+    ],
+    sections: [
+      {
+        title: 'The Registry',
+        description: 'Bilikha lists every registered creative in Biliran under the nine creative domains defined by RA 11904, the Philippine Creative Industries Development Act. It is a team project, live in production since October 2026. From October 3 to 24, 2026, I contributed 36 merged changes, covered in the sections below.',
+        image: '/assets/Bilikha_photo1.png',
+        features: [
+          { icon: 'grid', label: 'Nine Creative Domains', detail: 'From audiovisual media to cultural sites, with 82 crafts and specialisations beneath them.' },
+          { icon: 'search', label: 'Eight Municipalities', detail: 'Every creative works from one of Biliran\'s eight towns, and the directory lists nearby creatives first.' },
+          { icon: 'chat', label: 'Conversations and Agreements', detail: 'Clients message creatives after signing in and agree on the work inside the thread.' },
+          { icon: 'check', label: 'Earned Ratings', detail: 'A rating can only be left after a completed work agreement.' }
+        ]
+      },
+      {
+        title: 'Directory Search',
+        description: 'The landing page search box did nothing, and the API had no text search. I added search to the offers and creatives endpoints in PostgreSQL and connected both the landing page and the directory to it.',
+        image: '/assets/Bilikha_photo2.png',
+        features: [
+          { icon: 'search', label: 'Typo-Tolerant Matching', detail: 'Word-prefix full-text matching plus pg_trgm similarity on name fields, backed by GIN indexes, so "fotographer" still finds a photographer.' },
+          { icon: 'filter', label: 'Every Word Counts', detail: 'Each typed word must match some field, so "photographer naval" finds photographers in Naval. Exact matches rank above typo-only ones.' },
+          { icon: 'shield', label: 'Private Search Logs', detail: 'The request log hides the search text, since a search can be a person\'s name.' },
+          { icon: 'grid', label: 'Postings Card Catalog', detail: 'Client postings appear as cards with budget, town, time left and a reply count, in one column on phones and three on desktop.' }
+        ]
+      },
+      {
+        title: 'ID Verification',
+        description: 'I built ID verification for new accounts in five phased releases. Each phase shipped switched off and was tested on staging before the last one turned it on, so existing accounts were never affected. A new account can browse but not post until an administrator verifies a Biliran ID.',
+        flow: [
+          'Register',
+          'Upload ID (Front and Back)',
+          'Browse-Only Account',
+          'Admin Review',
+          'Verified / Try Again / Declined',
+          'One Appeal'
+        ],
+        bullets: [
+          'ID photos go to a private storage bucket. Review links are signed for at most 5 minutes, every view is written to an audit log, and each administrator is limited to 60 views an hour.',
+          'ID numbers are stored only as keyed hashes. A number already on another account is flagged, and verifying it anyway requires a written reason.',
+          'I found and fixed a staging bug where the same PhilSys number on a PhilID and on a printed ePhilID went undetected.',
+          'ID photos are deleted automatically 7 days after a decision. A declined person can appeal once from the sign-in screen.',
+          'Registration creates the account and its pending verification in one database transaction, with a test proving neither can be written without the other.'
+        ]
+      },
+      {
+        title: 'Sharing and Cover Photos',
+        description: 'Link preview crawlers do not run JavaScript, so every shared profile or offer showed the same generic card. I gave each one its own preview, and let creatives add a cover photo to their profile.',
+        features: [
+          { icon: 'story', label: 'Link Preview Cards', detail: 'vercel.json routes crawlers by User-Agent to small server-rendered pages with Open Graph and Twitter tags, while people keep the normal app.' },
+          { icon: 'shield', label: 'Never More Than the Page', detail: 'Previews use the same queries as the public pages, so unpublished or suspended items get the generic card. Values are escaped and cached for 10 minutes.' },
+          { icon: 'check', label: 'Cover Photos', detail: 'Uploaded at 1920px and 768px widths. The server checks both files exist, are under 2 MB, and are WebP or JPEG.' },
+          { icon: 'bell', label: 'Admin Approval', detail: 'A new cover waits beside the approved one until an administrator approves it. A rejection needs a reason and notifies the creative.' }
+        ]
+      },
+      {
+        title: 'Redesign and Phone Layouts',
+        description: 'I restyled the app in the navy and red identity and redesigned the offer, profile, account and messaging pages. Creatives on the platform mostly use budget Android phones on metered data, so every page has to work on a small screen.',
+        image: '/assets/Bilikha_photo3.png',
+        features: [
+          { icon: 'grid', label: 'New Identity', detail: 'The navy and red palette, applied across every page and the shared design system.' },
+          { icon: 'chat', label: 'Split-View Messaging', detail: 'On large screens the inbox stays on the left while the open thread changes on the right. Phones show one screen at a time.' },
+          { icon: 'search', label: '320px Sweep', detail: 'I checked 33 routes at ten screen sizes, three of them phones held sideways, and fixed controls that squeezed on a real 360dp phone.' },
+          { icon: 'check', label: '44px Touch Targets', detail: 'Compact sizes apply only with a mouse, so a phone in landscape keeps full-size targets.' }
+        ]
+      },
+      {
+        title: 'Architecture Overview',
+        description: 'The frontend and API are separate services, deployable independently and versioned together in one repository. Both are written in strict TypeScript.',
+        flow: [
+          'React SPA (Vercel)',
+          'Express 5 API (Render)',
+          'Drizzle ORM',
+          'PostgreSQL 17',
+          'Supabase Storage'
+        ],
+        bullets: [
+          'The main branch deploys to staging, and production is released by fast-forwarding a separate production branch.',
+          'TanStack Query and Axios handle data fetching on the frontend, with React Router for routing.',
+          'Uploads go straight to Supabase Storage through signed URLs, and the API confirms each file before saving it.',
+          'Decisions are recorded as architecture decision records, and larger features are built from written, phased plans.'
+        ]
+      }
+    ]
   }
 ];
